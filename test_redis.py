@@ -1,0 +1,10 @@
+﻿import socket
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect(('redis-11729.crce292.ap-south-1-2.ec2.cloud.redislabs.com', 11729))
+s.sendall(b'AUTH default DojwZF5ufCvNjzgcZfIMZ1Onum63yvJX\r\n')
+print(s.recv(1024))
+s.sendall(b'PING\r\n')
+print(s.recv(1024))
+s.sendall(b'KEYS *\r\n')
+res = s.recv(4096)
+print('Keys:', res)
