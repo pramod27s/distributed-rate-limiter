@@ -8,6 +8,19 @@ pipeline {
     }
 
     stages {
+        stage('Stop Existing Server') {
+            steps {
+                script {
+                    try {
+                        // Attempt to stop existing Java process on port 8080 before building
+                        bat 'FOR /F "tokens=5" %%T IN (\'netstat -a -n -o ^| findstr :8080\') DO TaskKill.exe /PID %%T /F'
+                    } catch (Exception e) {
+                        echo "No existing process running on port 8080 or failed to kill"
+                    }
+                }
+            }
+        }
+
         stage('Checkout') {
             steps {
                 // Checkout code from GitHub
@@ -27,15 +40,6 @@ pipeline {
             steps {
                 script {
                     echo "Deploying to NGD Application/Server..."
-                    // For a local demo, we kill the existing process (if running) and start the new Jar
-                    // Note: This is a simple bash/batch approach for demonstration.
-
-                    try {
-                        // Attempt to stop existing Java process on port 8080
-                        bat 'FOR /F "tokens=5" %%T IN (\'netstat -a -n -o ^| findstr :8080\') DO TaskKill.exe /PID %%T /F'
-                    } catch (Exception e) {
-                        echo "No existing process running on port 8080 or failed to kill"
-                    }
 
                     // Override Jenkin's Process Tree Killer so it doesn't assassinate the java process
                     // Using Jenkins specific environment variable BUILD_ID bypass approach
