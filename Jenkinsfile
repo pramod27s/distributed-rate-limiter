@@ -37,8 +37,9 @@ pipeline {
                         echo "No existing process running on port 8080 or failed to kill"
                     }
 
-                    // Use PowerShell to start the process fully detached
-                    bat 'powershell.exe -Command "Start-Process java -ArgumentList \'-jar target/distributed-rate-limiter-1.2.0.jar\' -RedirectStandardOutput server_start.log -RedirectStandardError server_error.log -WindowStyle Hidden"'
+                    // Override Jenkin's Process Tree Killer so it doesn't assassinate the java process
+                    // Using Jenkins specific environment variable BUILD_ID bypass approach
+                    bat 'set JENKINS_NODE_COOKIE=dontKillMe && start /B java -jar target/distributed-rate-limiter-1.2.0.jar'
                 }
             }
         }
