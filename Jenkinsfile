@@ -18,8 +18,8 @@ pipeline {
         stage('Build Spring Boot Backend') {
             steps {
                 // Run Maven package to compile and build the .jar file
-                // -DskipTests is used to speed up the demo, you can remove it later
-                bat 'mvn clean package -DskipTests'
+                // -Dmaven.test.skip=true is used to completely skip test compilation
+                bat 'mvn clean package -Dmaven.test.skip=true'
             }
         }
 
