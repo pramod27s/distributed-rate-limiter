@@ -37,9 +37,8 @@ pipeline {
                         echo "No existing process running on port 8080 or failed to kill"
                     }
 
-                    // Start the newly built jar in the background
-                    // The jar name might change based on your pom.xml version
-                    bat 'start java -jar target/distributed-rate-limiter-1.2.0.jar'
+                    // Use PowerShell to start the process fully detached
+                    bat 'powershell.exe -Command "Start-Process java -ArgumentList \'-jar target/distributed-rate-limiter-1.2.0.jar\' -RedirectStandardOutput server_start.log -RedirectStandardError server_error.log -WindowStyle Hidden"'
                 }
             }
         }
