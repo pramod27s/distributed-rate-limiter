@@ -3,6 +3,7 @@ package dev.bnacar.distributedratelimiter.security;
 import dev.bnacar.distributedratelimiter.config.SecurityConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.mockito.Mockito.mock;
 
 import java.util.Arrays;
 
@@ -11,12 +12,14 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ApiKeyServiceTest {
 
     private SecurityConfiguration securityConfiguration;
+    private ApiKeyManagementService apiKeyManagementService;
     private ApiKeyService apiKeyService;
 
     @BeforeEach
     public void setUp() {
         securityConfiguration = new SecurityConfiguration();
-        apiKeyService = new ApiKeyService(securityConfiguration);
+        apiKeyManagementService = mock(ApiKeyManagementService.class);
+        apiKeyService = new ApiKeyService(securityConfiguration, apiKeyManagementService);
     }
 
     @Test

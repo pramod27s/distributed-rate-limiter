@@ -60,7 +60,7 @@ public class MetricsControllerTest {
         keyMetrics.put("user1", new MetricsResponse.KeyMetrics(5, 2, System.currentTimeMillis()));
         keyMetrics.put("user2", new MetricsResponse.KeyMetrics(3, 1, System.currentTimeMillis()));
 
-        metricsResponse = new MetricsResponse(keyMetrics, true, 8, 3);
+        metricsResponse = new MetricsResponse(keyMetrics, true, 8L, 3L, new java.util.ArrayList<>());
     }
 
     @Test
@@ -81,7 +81,7 @@ public class MetricsControllerTest {
 
     @Test
     void getMetrics_WithEmptyMetrics_ShouldReturnEmptyKeyMetrics() throws Exception {
-        MetricsResponse emptyResponse = new MetricsResponse(new HashMap<>(), false, 0, 0);
+        MetricsResponse emptyResponse = new MetricsResponse(new HashMap<>(), false, 0L, 0L, new java.util.ArrayList<>());
         when(metricsService.getMetrics()).thenReturn(emptyResponse);
 
         mockMvc.perform(get("/metrics"))

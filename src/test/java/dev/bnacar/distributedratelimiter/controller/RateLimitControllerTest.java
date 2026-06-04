@@ -57,8 +57,13 @@ public class RateLimitControllerTest {
         }
 
         @Bean
-        public dev.bnacar.distributedratelimiter.ratelimit.CompositeRateLimiterService compositeRateLimiterService() {
-            return mock(dev.bnacar.distributedratelimiter.ratelimit.CompositeRateLimiterService.class);
+        public dev.bnacar.distributedratelimiter.ratelimit.DistributedRateLimiterService distributedRateLimiterService() {
+            return mock(dev.bnacar.distributedratelimiter.ratelimit.DistributedRateLimiterService.class);
+        }
+
+        @Bean
+        public dev.bnacar.distributedratelimiter.monitoring.MetricsService metricsService() {
+            return mock(dev.bnacar.distributedratelimiter.monitoring.MetricsService.class);
         }
 
         @Bean
@@ -80,12 +85,6 @@ public class RateLimitControllerTest {
         public SecurityConfiguration securityConfiguration() {
             return mock(SecurityConfiguration.class);
         }
-        
-        @Bean
-        public dev.bnacar.distributedratelimiter.geo.GeographicRateLimitService geographicRateLimitService() {
-            return mock(dev.bnacar.distributedratelimiter.geo.GeographicRateLimitService.class);
-        }
-        
     }
 
     @BeforeEach
@@ -233,3 +232,4 @@ public class RateLimitControllerTest {
                 .andExpect(jsonPath("$.allowed").value(true));
     }
 }
+
