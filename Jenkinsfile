@@ -14,9 +14,13 @@ pipeline {
                 script {
                     try {
                         // Attempt to stop existing Java process on port 8080 before building
-                        bat 'FOR /F "tokens=5" %%T IN (\'netstat -a -n -o ^| findstr :8080\') DO TaskKill.exe /PID %%T /F'
+                        bat '''
+                        FOR /F "tokens=5" %%T IN ('netstat -ano ^| findstr "LISTENING" ^| findstr ":8080"') DO (
+                            IF NOT "%%T"=="0" TaskKill /PID %%T /F
+                        )
+                        '''
                     } catch (Exception e) {
-                        echo "No existing process running on port 8080 or failed to kill"
+                        echo "No process found on port 8080 or failed to kill"
                     }
                 }
             }
@@ -50,4 +54,3 @@ pipeline {
         }
     }
 }
-
