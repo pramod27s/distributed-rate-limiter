@@ -22,6 +22,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import org.junit.jupiter.api.BeforeEach;
+import dev.bnacar.distributedratelimiter.ratelimit.DistributedRateLimiterService;
 
 @WebMvcTest(controllers = RateLimitController.class)
 @Import(RateLimitControllerTest.TestConfig.class)
@@ -36,6 +37,8 @@ public class RateLimitControllerTest {
     @Autowired
     private RateLimiterService rateLimiterService;
 
+    @Autowired
+    private DistributedRateLimiterService distributedRateLimiterService;
 
     @Autowired
     private ApiKeyService apiKeyService;
@@ -103,7 +106,7 @@ public class RateLimitControllerTest {
         when(ipSecurityService.isIpAllowed("127.0.0.1")).thenReturn(true);
         when(apiKeyService.isValidApiKey(null)).thenReturn(true);
         when(ipSecurityService.createIpBasedKey("user1", "127.0.0.1")).thenReturn("ip:127.0.0.1:user1");
-        when(rateLimiterService.isAllowed("ip:127.0.0.1:user1", 5)).thenReturn(true);
+        when(distributedRateLimiterService.isAllowed("ip:127.0.0.1:user1", 5)).thenReturn(true);
         
         RateLimitRequest request = new RateLimitRequest("user1", 5);
         
@@ -123,7 +126,7 @@ public class RateLimitControllerTest {
         when(ipAddressExtractor.getClientIpAddress(any())).thenReturn("127.0.0.1");
         when(ipSecurityService.isIpAllowed("127.0.0.1")).thenReturn(true);
         when(apiKeyService.isValidApiKey("valid-api-key")).thenReturn(true);
-        when(rateLimiterService.isAllowed("valid-api-key", 5)).thenReturn(true);
+        when(distributedRateLimiterService.isAllowed("valid-api-key", 5)).thenReturn(true);
         
         RateLimitRequest request = new RateLimitRequest("user1", 5, "valid-api-key");
         
@@ -178,7 +181,7 @@ public class RateLimitControllerTest {
         when(ipSecurityService.isIpAllowed("127.0.0.1")).thenReturn(true);
         when(apiKeyService.isValidApiKey(null)).thenReturn(true);
         when(ipSecurityService.createIpBasedKey("user2", "127.0.0.1")).thenReturn("ip:127.0.0.1:user2");
-        when(rateLimiterService.isAllowed("ip:127.0.0.1:user2", 1)).thenReturn(false);
+        when(distributedRateLimiterService.isAllowed("ip:127.0.0.1:user2", 1)).thenReturn(false);
         
         RateLimitRequest request = new RateLimitRequest("user2", 1);
         
@@ -218,7 +221,7 @@ public class RateLimitControllerTest {
         when(ipSecurityService.isIpAllowed("127.0.0.1")).thenReturn(true);
         when(apiKeyService.isValidApiKey(null)).thenReturn(true);
         when(ipSecurityService.createIpBasedKey("user7", "127.0.0.1")).thenReturn("ip:127.0.0.1:user7");
-        when(rateLimiterService.isAllowed("ip:127.0.0.1:user7", 1)).thenReturn(true);
+        when(distributedRateLimiterService.isAllowed("ip:127.0.0.1:user7", 1)).thenReturn(true);
         
         // Test that tokens defaults to 1 when not specified
         String requestJson = "{\"key\":\"user7\"}";

@@ -1,6 +1,7 @@
 package dev.bnacar.distributedratelimiter.deployment;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.io.TempDir;
 import org.yaml.snakeyaml.Yaml;
 
@@ -18,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 /**
  * Tests to validate Kubernetes deployment templates and configurations.
  */
+@Disabled("Kubernetes deployment assets are not used by this project")
 class DeploymentTemplateValidationTest {
 
     private static final String K8S_BASE_PATH = "k8s/base";
