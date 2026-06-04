@@ -33,11 +33,19 @@ pipeline {
             }
         }
 
+        stage('Run Tests') {
+            steps {
+                // Run Maven test explicitly as its own stage
+                // This ensures if tests fail, the build stops before packaging
+                bat 'mvn clean test'
+            }
+        }
+
         stage('Build Spring Boot Backend') {
             steps {
                 // Run Maven package to compile and build the .jar file
-                // -Dmaven.test.skip=true is used to completely skip test compilation
-                bat 'mvn clean package -Dmaven.test.skip=true'
+                // -Dmaven.test.skip=true used here because tests already ran in the previous stage!
+                bat 'mvn package -Dmaven.test.skip=true'
             }
         }
 
@@ -51,6 +59,20 @@ pipeline {
                     bat 'set JENKINS_NODE_COOKIE=dontKillMe && start /B java -jar target/distributed-rate-limiter-1.2.0.jar'
                 }
             }
+        }
+    }
+
+    post {
+        success {
+            echo "✅ Pipeline completed successfully! Application deployed and running."
+        }
+        failure {
+            echo "❌ Pipeline failed! Please inspect the Jenkins logs."
+            // Future Add: send email/slack notification here
+        }
+        always {
+            // General cleanup could go here
+            echo "Pipeline run finished."
         }
     }
 }
