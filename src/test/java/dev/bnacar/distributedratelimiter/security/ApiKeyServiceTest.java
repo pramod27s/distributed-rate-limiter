@@ -73,3 +73,4 @@ public class ApiKeyServiceTest {
         assertFalse(apiKeyService.isValidApiKey("any-key"));
     }
 }
+

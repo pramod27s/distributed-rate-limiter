@@ -16,6 +16,7 @@
 
     <properties>
         <java.version>21</java.version>
+        <argLine></argLine>
         <jacoco.min.instruction.coverage>0.50</jacoco.min.instruction.coverage>
         <jacoco.min.branch.coverage>0.50</jacoco.min.branch.coverage>
         <maven.project.sourceRoots.warningsDisabled>true</maven.project.sourceRoots.warningsDisabled>
