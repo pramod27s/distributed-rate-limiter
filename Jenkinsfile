@@ -62,7 +62,6 @@ pipeline {
         }
     }
 
-
     post {
         success {
             echo "✅ Pipeline completed successfully! Application deployed and running."
